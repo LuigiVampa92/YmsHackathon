@@ -3,7 +3,8 @@ package com.luigivampa92.yms.timekiller.ui.main
 import android.os.Bundle
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.luigivampa92.yms.timekiller.R
-import com.luigivampa92.yms.timekiller.log
+import com.luigivampa92.yms.timekiller.model.entity.GameField
+import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
 
 class MainActivity : BaseActivity(), MainView {
@@ -16,7 +17,11 @@ class MainActivity : BaseActivity(), MainView {
         setContentView(R.layout.activity_main)
     }
 
-    override fun test() {
-        log("123")
+    override fun setWord(letter: List<Letter>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setField(field: GameField) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
