@@ -1,13 +1,19 @@
 package com.luigivampa92.yms.timekiller.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.luigivampa92.yms.timekiller.R
 import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainView {
+
+    @Inject
+    lateinit var app : Context
 
     @InjectPresenter
     lateinit var presenter: MainPresenter

@@ -7,7 +7,7 @@ import dagger.android.AndroidInjection
 abstract class BaseActivity : MvpAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        AndroidInjection.inject(this)
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
     }
 }
