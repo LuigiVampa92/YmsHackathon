@@ -2,6 +2,7 @@ package com.luigivampa92.yms.timekiller.ui.main
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
@@ -28,6 +29,7 @@ class LetterViewHolder (
     fun bind(letter: Letter) {
         item = letter
         textViewChar.text = letter.char.toString()
+        textViewChar.visibility = if (!letter.isEmpty) View.VISIBLE else View.INVISIBLE
     }
 
     @OnClick(R.id.letter_char)
