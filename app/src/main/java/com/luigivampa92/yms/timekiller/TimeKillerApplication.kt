@@ -1,12 +1,21 @@
 package com.luigivampa92.yms.timekiller
 
+import android.app.Activity
 import android.app.Application
+import com.luigivampa92.yms.timekiller.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
-class TimeKillerApplication : Application() {
+class TimeKillerApplication : Application(), HasActivityInjector {
 
     companion object {
         @JvmStatic lateinit var INSTANCE : TimeKillerApplication
     }
+
+    @Inject
+    lateinit var activityInjector : DispatchingAndroidInjector<Activity>
 
 //    @Inject
 //    protected lateinit var activityInjector: DispatchingAndroidInjector<Activity>
@@ -19,8 +28,10 @@ class TimeKillerApplication : Application() {
         super.onCreate()
         INSTANCE = this
 
-//        val build = DaggerAppComponent.builder().withContext(this).build()
+        DaggerAppComponent.builder().application(this).build().inject(this)
 
 //        appComponent.inject(this)
     }
+
+    override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 }
