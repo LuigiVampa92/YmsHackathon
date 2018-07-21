@@ -29,7 +29,9 @@ class WordLetterViewHolder (
     fun bind(letter: Letter) {
         item = letter
         textViewChar.text = letter.char.toString()
-        textViewChar.setTextColor(if (!letter.isEmpty) ContextCompat.getColor(itemView.context, R.color.color_primary) else ContextCompat.getColor(itemView.context, R.color.color_accent) )
+        val color: Int = if (!letter.isEmpty) ContextCompat.getColor(itemView.context, R.color.color_filled) else ContextCompat.getColor(itemView.context, R.color.color_unfilled)
+        textViewChar.setTextColor(color)
+
         itemView.visibility = View.VISIBLE
     }
 }
