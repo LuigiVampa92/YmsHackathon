@@ -2,10 +2,9 @@ package com.luigivampa92.yms.timekiller.ui.main
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.luigivampa92.yms.timekiller.TimeKillerApplication
 import com.luigivampa92.yms.timekiller.log
-import com.luigivampa92.yms.timekiller.model.GameProvider
-import com.luigivampa92.yms.timekiller.model.GameProviderImpl
-import com.luigivampa92.yms.timekiller.model.StubWordsProviderImpl
+import com.luigivampa92.yms.timekiller.model.*
 import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import kotlinx.coroutines.experimental.delay
@@ -15,11 +14,14 @@ import kotlinx.coroutines.experimental.launch
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
 
+    private val gamePreferences: GamePreferences = GamePreferencesImpl(TimeKillerApplication.INSTANCE)
     private val gameProvider: GameProvider = GameProviderImpl(StubWordsProviderImpl())
 
     private lateinit var currentField: GameField
     private var wordCurrent: String? = null
     private var wordToFill: String? = null
+
+    private var currentDifficulty = 20
 
     private var time = 60
 
@@ -36,7 +38,7 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     fun start() {
-        currentField = gameProvider.nextField(70)
+        currentField = gameProvider.nextField(currentDifficulty)
         wordToFill = currentField.word
         wordCurrent = ""
 
@@ -59,6 +61,7 @@ class MainPresenter : MvpPresenter<MainView>() {
             wordCurrent += letter.char
 
             if (wordCurrent!!.length == wordToFill!!.length) {
+                currentDifficulty += 7
                 start()
             }
         }
