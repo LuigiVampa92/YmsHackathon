@@ -3,17 +3,15 @@ package com.luigivampa92.yms.timekiller
 import com.luigivampa92.yms.timekiller.model.GameProviderImpl
 import com.luigivampa92.yms.timekiller.model.StubWordsProviderImpl
 import com.luigivampa92.yms.timekiller.model.entity.Letter
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class StabWordsProviderImplTest {
 
-    fun arraysToString(array : Array<Array<Letter>> ): String {
-        var out = StringBuilder()
-        for (a in array){
-            for (letter in a){
-                out.append(letter.char)
-            }
+    fun arraysToString(list: List<Letter>): String {
+        val out = StringBuilder()
+        for (a in list) {
+            out.append(a.char)
         }
         return out.toString()
     }
@@ -40,13 +38,13 @@ class StabWordsProviderImplTest {
 
         game.restart()
         val f1 = game.nextField(1)
-        assertEquals(4, f1.word.length);
+        assertEquals(4, f1.word.length)
         val s1 = arraysToString(f1.field)
         val s1c = s1.filter { it != ' ' }
         assertEquals(4, s1c.length)
 
         val f2 = game.nextField(70)
-        assertEquals(7, f2.word.length);
+        assertEquals(7, f2.word.length)
         val s2 = arraysToString(f2.field)
         val s2c = s2.filter { it != ' ' }
         assertEquals(18, s2c.length)
