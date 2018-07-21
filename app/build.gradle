@@ -21,7 +21,10 @@ android {
 
 def depVersions = [
         support         : '27.1.1',
-        constraintlayout: '1.1.2'
+        constraintlayout: '1.1.2',
+        dagger          : '2.11',
+        moxy            : '1.5.3',
+        butterknife     : '8.8.1'
 ]
 
 def depTestVersions = [
@@ -38,6 +41,20 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${depVersions.constraintlayout}"
     implementation "com.android.support:recyclerview-v7:${depVersions.support}"
     implementation "com.android.support:design:${depVersions.support}"
+
+    implementation "com.google.dagger:dagger:${depVersions.dagger}"
+    implementation "com.google.dagger:dagger-android:${depVersions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${depVersions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${depVersions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${depVersions.dagger}"
+
+    implementation "com.arello-mobile:moxy:${depVersions.moxy}"
+    implementation "com.arello-mobile:moxy-android:${depVersions.moxy}"
+    implementation "com.arello-mobile:moxy-app-compat:${depVersions.moxy}"
+    kapt "com.arello-mobile:moxy-compiler:${depVersions.moxy}"
+
+    implementation "com.jakewharton:butterknife:${depVersions.butterknife}"
+    kapt "com.jakewharton:butterknife-compiler:${depVersions.butterknife}"
 
     androidTestImplementation"com.android.support.test.espresso:espresso-core:${depTestVersions.espresso}"
     androidTestImplementation "com.android.support.test:runner:${depTestVersions.runner}"
