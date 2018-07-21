@@ -1,7 +1,6 @@
 package com.luigivampa92.yms.timekiller.ui.main
 
 import android.content.Context
-import android.media.AudioManager
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +14,8 @@ import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
 import javax.inject.Inject
 import android.media.MediaPlayer
+import android.support.v7.app.AlertDialog
+import android.view.View
 import kotlinx.coroutines.experimental.launch
 
 
@@ -98,5 +99,26 @@ class MainActivity : BaseActivity(), MainView {
         launch {
             mpSuccess.start()
         }
+    }
+
+    override fun showGameOver(time: Int) {
+        runOnUiThread {
+            setTimerVisibility(false)
+            AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle("Игра окончена")
+                    .setMessage("Вы продержались $time секунд")
+                    .setPositiveButton("Еще раз", { dialog, _ ->
+                        dialog.dismiss()
+                        presenter.start()
+                        presenter.restartTime()
+                        setTimerVisibility(true)
+                    })
+                    .show()
+        }
+    }
+
+    override fun setTimerVisibility(visible: Boolean) {
+        timeTextView.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }

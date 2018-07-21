@@ -10,4 +10,6 @@ interface MainView : MvpView {
     fun playValid()
     fun playInvalid()
     fun playSuccess()
+    fun showGameOver(time: Int)
+    fun setTimerVisibility(visible: Boolean)
 }

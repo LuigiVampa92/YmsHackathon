@@ -81,19 +81,44 @@ class MainPresenter : MvpPresenter<MainView>() {
             repeat(100000) {
                 time--
                 viewState.setTime(time)
+                checkIfGameIsOver()
                 delay(1, TimeUnit.SECONDS)
             }
         }
     }
 
-    fun testWord() {
-//        viewState.setWord(getTestWord())
-//        viewState.setField(getTestField())
+
+    fun checkIfGameIsOver() {
+        if (time <= 0) {
+            time = 60
+            viewState.showGameOver(42)
+        }
+    }
+
+    fun restartTime() {
+        time = 60
     }
 
 
 
 
+
+
+
+
+
+
+
+
+//
+//    fun testWord() {
+////        viewState.setWord(getTestWord())
+////        viewState.setField(getTestField())
+//    }
+//
+//
+//
+//
 
 
 
