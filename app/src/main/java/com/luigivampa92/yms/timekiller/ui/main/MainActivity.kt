@@ -71,6 +71,9 @@ class MainActivity : BaseActivity(), MainView {
         mpInvalid = MediaPlayer.create(applicationContext, R.raw.invalid)
 
         setSupportActionBar(toolbar)
+
+        presenter.start()
+        presenter.startTicker()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -90,13 +93,6 @@ class MainActivity : BaseActivity(), MainView {
         }
 
         return true
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        presenter.start()
-        presenter.startTicker()
     }
 
     override fun setWord(letter: List<Letter>) {

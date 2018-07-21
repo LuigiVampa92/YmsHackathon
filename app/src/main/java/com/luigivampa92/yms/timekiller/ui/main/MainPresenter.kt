@@ -92,6 +92,7 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun checkIfGameIsOver() {
         if (time <= 0) {
+            gamePreferences.setBestResult("$totalGameTime секунд")
             time = 1000000
             viewState.showGameOver(totalGameTime)
         }
