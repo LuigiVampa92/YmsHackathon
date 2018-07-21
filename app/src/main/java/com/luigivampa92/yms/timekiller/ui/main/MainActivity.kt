@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.TextView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import butterknife.BindView
@@ -15,6 +16,11 @@ import com.luigivampa92.yms.timekiller.R
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
 import javax.inject.Inject
+import android.media.MediaPlayer
+import android.support.v7.app.AlertDialog
+import android.view.View
+import kotlinx.coroutines.experimental.launch
+
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
@@ -34,11 +40,16 @@ class MainActivity : BaseActivity(), MainView {
     protected lateinit var recyclerViewField: RecyclerView
     @BindView(R.id.toolbar)
     protected lateinit var toolbar: Toolbar
+    @BindView(R.id.time_text_view)
+    protected lateinit var timeTextView: TextView
 
     private lateinit var wordAdapter: WordRecyclerViewAdapter
     private lateinit var wordLayoutManager: RecyclerView.LayoutManager
     private lateinit var fieldAdapter: FieldRecyclerViewAdapter
     private lateinit var fieldLayoutManager: RecyclerView.LayoutManager
+    private lateinit var mpValid: MediaPlayer
+    private lateinit var mpInvalid: MediaPlayer
+    private lateinit var mpSuccess: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +65,10 @@ class MainActivity : BaseActivity(), MainView {
         fieldLayoutManager = GridLayoutManager(this, 8)
         recyclerViewField.adapter = fieldAdapter
         recyclerViewField.layoutManager = fieldLayoutManager
+
+        mpValid = MediaPlayer.create(applicationContext, R.raw.valid)
+        mpSuccess = MediaPlayer.create(applicationContext, R.raw.success)
+        mpInvalid = MediaPlayer.create(applicationContext, R.raw.invalid)
 
         setSupportActionBar(toolbar)
     }
@@ -81,6 +96,7 @@ class MainActivity : BaseActivity(), MainView {
         super.onResume()
 
         presenter.start()
+        presenter.startTicker()
     }
 
     override fun setWord(letter: List<Letter>) {
@@ -89,5 +105,50 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun setField(field: List<Letter>) {
         fieldAdapter.showField(field)
+    }
+
+    override fun setTime(time: Int) {
+        runOnUiThread {
+            timeTextView.text = time.toString()
+        }
+    }
+
+    override fun playValid() {
+        launch {
+            mpValid.start()
+        }
+    }
+
+    override fun playInvalid() {
+        launch {
+            mpInvalid.start()
+        }
+    }
+
+    override fun playSuccess() {
+        launch {
+            mpSuccess.start()
+        }
+    }
+
+    override fun showGameOver(time: Int) {
+        runOnUiThread {
+            setTimerVisibility(false)
+            AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle("Игра окончена")
+                    .setMessage("Вы продержались $time секунд")
+                    .setPositiveButton("Еще раз", { dialog, _ ->
+                        dialog.dismiss()
+                        presenter.start()
+                        presenter.restartTime()
+                        setTimerVisibility(true)
+                    })
+                    .show()
+        }
+    }
+
+    override fun setTimerVisibility(visible: Boolean) {
+        timeTextView.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }

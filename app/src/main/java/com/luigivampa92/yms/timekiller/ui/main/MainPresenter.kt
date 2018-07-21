@@ -2,24 +2,36 @@ package com.luigivampa92.yms.timekiller.ui.main
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.luigivampa92.yms.timekiller.TimeKillerApplication
 import com.luigivampa92.yms.timekiller.log
-import com.luigivampa92.yms.timekiller.model.GameProvider
-import com.luigivampa92.yms.timekiller.model.GameProviderImpl
-import com.luigivampa92.yms.timekiller.model.StubWordsProviderImpl
+import com.luigivampa92.yms.timekiller.model.*
 import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import java.util.concurrent.TimeUnit
+
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
 
+    private val gamePreferences: GamePreferences = GamePreferencesImpl(TimeKillerApplication.INSTANCE)
     private val gameProvider: GameProvider = GameProviderImpl(StubWordsProviderImpl())
 
     private lateinit var currentField: GameField
+    private var wordCurrent: String? = null
+    private var wordToFill: String? = null
+
+    private var currentDifficulty = 20
+
+    private var time = 60
 
     fun updateViewState() {
+        val wordsStr = currentField.word
+
         val word = ArrayList<Letter>()
-        for (i in 0 until currentField.word.length) {
-            word.add(Letter(currentField.word[i], false, i))
+        for (i in 0 until wordsStr!!.length) {
+            word.add(Letter(wordsStr!![i], wordCurrent!!.length < i + 1, i))
         }
 
         viewState.setWord(word)
@@ -27,26 +39,86 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     fun start() {
-        currentField = gameProvider.nextField(70)
+        currentField = gameProvider.nextField(currentDifficulty)
+        wordToFill = currentField.word
+        wordCurrent = ""
+
         updateViewState()
     }
 
     fun wordLetterClicked(letter: Letter) {
         log("letter ${letter.char.toString()} in word clicked")
+
     }
 
     fun fieldLetterClicked(letter: Letter) {
-        log("letter ${letter.char.toString()} in field clicked")
+        if (wordToFill!![wordCurrent!!.length] == letter.char) {
+            log("valid letter")
+            viewState.playValid()
+            // remove clicked letter from field
+            val newLetter = letter.copy(isEmpty = true)
+            (currentField.field as ArrayList).set(letter.position, newLetter)
+
+            wordCurrent += letter.char
+
+            if (wordCurrent!!.length == wordToFill!!.length) {
+                currentDifficulty += 7
+                time += 10
+                viewState.playSuccess()
+                start()
+            }
+        }
+        else {
+            log("invalid letter") // todo
+            time -= 3
+            viewState.playInvalid()
+        }
+        updateViewState()
     }
 
-    fun testWord() {
-//        viewState.setWord(getTestWord())
-//        viewState.setField(getTestField())
+    fun startTicker() {
+        launch {
+            repeat(100000) {
+                time--
+                viewState.setTime(time)
+                checkIfGameIsOver()
+                delay(1, TimeUnit.SECONDS)
+            }
+        }
+    }
+
+
+    fun checkIfGameIsOver() {
+        if (time <= 0) {
+            time = 60
+            viewState.showGameOver(42)
+        }
+    }
+
+    fun restartTime() {
+        time = 60
     }
 
 
 
 
+
+
+
+
+
+
+
+
+//
+//    fun testWord() {
+////        viewState.setWord(getTestWord())
+////        viewState.setField(getTestField())
+//    }
+//
+//
+//
+//
 
 
 

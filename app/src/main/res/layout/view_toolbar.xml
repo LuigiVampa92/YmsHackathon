@@ -14,9 +14,14 @@
     <RelativeLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!--todo add custom stuff on toolbar-->
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="60"/>
 
     </RelativeLayout>
 
