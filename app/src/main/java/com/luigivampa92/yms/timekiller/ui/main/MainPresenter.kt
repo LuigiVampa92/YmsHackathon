@@ -70,6 +70,7 @@ class MainPresenter : MvpPresenter<MainView>() {
         }
         else {
             log("invalid letter") // todo
+            time -= 3
             viewState.playInvalid()
         }
         updateViewState()
