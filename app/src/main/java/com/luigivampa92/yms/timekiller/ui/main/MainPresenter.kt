@@ -9,6 +9,7 @@ import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import java.util.concurrent.TimeUnit
 
 
 @InjectViewState
@@ -43,7 +44,6 @@ class MainPresenter : MvpPresenter<MainView>() {
         wordCurrent = ""
 
         updateViewState()
-        startTicker()
     }
 
     fun wordLetterClicked(letter: Letter) {
@@ -63,12 +63,14 @@ class MainPresenter : MvpPresenter<MainView>() {
 
             if (wordCurrent!!.length == wordToFill!!.length) {
                 currentDifficulty += 7
+                time += 10
                 viewState.playSuccess()
                 start()
             }
         }
         else {
             log("invalid letter") // todo
+            time -= 3
             viewState.playInvalid()
         }
         updateViewState()
@@ -79,7 +81,7 @@ class MainPresenter : MvpPresenter<MainView>() {
             repeat(100000) {
                 time--
                 viewState.setTime(time)
-                delay(1000L)
+                delay(1, TimeUnit.SECONDS)
             }
         }
     }
