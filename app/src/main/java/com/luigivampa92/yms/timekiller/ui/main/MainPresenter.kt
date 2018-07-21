@@ -8,6 +8,9 @@ import com.luigivampa92.yms.timekiller.model.GameProviderImpl
 import com.luigivampa92.yms.timekiller.model.StubWordsProviderImpl
 import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
@@ -17,6 +20,8 @@ class MainPresenter : MvpPresenter<MainView>() {
     private lateinit var currentField: GameField
     private var wordCurrent: String? = null
     private var wordToFill: String? = null
+
+    private var time = 60
 
     fun updateViewState() {
         val wordsStr = currentField.word
@@ -36,6 +41,7 @@ class MainPresenter : MvpPresenter<MainView>() {
         wordCurrent = ""
 
         updateViewState()
+        startTicker()
     }
 
     fun wordLetterClicked(letter: Letter) {
@@ -60,6 +66,16 @@ class MainPresenter : MvpPresenter<MainView>() {
             log("invalid letter") // todo
         }
         updateViewState()
+    }
+
+    fun startTicker() {
+        launch {
+            repeat(100000) {
+                time--
+                viewState.setTime(time)
+                delay(1000)
+            }
+        }
     }
 
     fun testWord() {

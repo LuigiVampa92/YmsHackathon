@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -25,6 +26,8 @@ class MainActivity : BaseActivity(), MainView {
     protected lateinit var recyclerViewWord: RecyclerView
     @BindView(R.id.recycler_view_field)
     protected lateinit var recyclerViewField: RecyclerView
+    @BindView(R.id.time_text_view)
+    protected lateinit var timeTextView: TextView
 
     private lateinit var wordAdapter: WordRecyclerViewAdapter
     private lateinit var wordLayoutManager: RecyclerView.LayoutManager
@@ -59,5 +62,11 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun setField(field: List<Letter>) {
         fieldAdapter.showField(field)
+    }
+
+    override fun setTime(time: Int) {
+        runOnUiThread {
+            timeTextView.text = time.toString()
+        }
     }
 }
