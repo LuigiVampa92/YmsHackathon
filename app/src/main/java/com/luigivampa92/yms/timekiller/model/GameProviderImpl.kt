@@ -48,7 +48,7 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
             val guard = x * 1000 + y
             if (!repositionGuard.contains(guard)){
 
-                val newLetter = Letter(word[i++].toUpperCase(), true, -1)
+                val newLetter = Letter(word[i++].toUpperCase(), false, -1)
                 field[x][y] = newLetter
                 repositionGuard.add(guard)
             }
@@ -63,7 +63,7 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
             val guard = x * 1000 + y
             if (!repositionGuard.contains(guard)){
 
-                val newLetter = Letter(noise.toUpperCase(), true, -1)
+                val newLetter = Letter(noise.toUpperCase(), false, -1)
                 field[x][y] = newLetter
                 repositionGuard.add(guard)
                 i++
