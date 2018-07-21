@@ -2,12 +2,15 @@ package com.luigivampa92.yms.timekiller.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.luigivampa92.yms.timekiller.R
 import com.luigivampa92.yms.timekiller.model.entity.GameField
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
-import dagger.android.AndroidInjection
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainView {
@@ -18,13 +21,33 @@ class MainActivity : BaseActivity(), MainView {
     @InjectPresenter
     lateinit var presenter: MainPresenter
 
+    @BindView(R.id.recycler_view_word)
+    protected lateinit var recyclerViewWord: RecyclerView
+    @BindView(R.id.recycler_view_field)
+    protected lateinit var recyclerViewField: RecyclerView
+
+    private lateinit var wordAdapter: WordRecyclerViewAdapter
+    private lateinit var wordLayoutManager: RecyclerView.LayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        ButterKnife.bind(this)
+
+        wordAdapter = WordRecyclerViewAdapter {}
+        wordLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewWord.adapter = wordAdapter
+        recyclerViewWord.layoutManager = wordLayoutManager
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        presenter.testWord()
     }
 
     override fun setWord(letter: List<Letter>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        wordAdapter.setItems(letter)
     }
 
     override fun setField(field: GameField) {
