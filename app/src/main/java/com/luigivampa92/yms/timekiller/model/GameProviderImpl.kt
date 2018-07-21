@@ -24,13 +24,17 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
         var word : String
         val wordLen = difficultyLevel % 6 + 3
         val noiseCount = difficultyLevel / 6
+        var j = 0
         do {
             word = wordsProvider.getWordByLetterCount(wordLen)
-        } while (!uniqueGuard.contains(word))
+            j++
+            if (j > 100)
+                break
+        } while (uniqueGuard.contains(word))
 
         uniqueGuard.add(word)
 
-        val field : Array<Array<Letter>> = Array(gameFieldSize) { Array(gameFieldSize) { Letter(' ', true) } }
+        val field : Array<Array<Letter>> = Array(gameFieldSize) { Array(gameFieldSize) { Letter(' ', true, -1) } }
 
         val noiseSymbols = allLettersString.filter { it -> !word.contains(it)}
 
@@ -44,13 +48,14 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
             val guard = x * 1000 + y
             if (!repositionGuard.contains(guard)){
 
-                val newLetter = Letter(word[i++].toUpperCase(), true)
+                val newLetter = Letter(word[i++].toUpperCase(), true, -1)
                 field[x][y] = newLetter
                 repositionGuard.add(guard)
             }
         }while (i < word.length)
 
-        do {
+        i = 0
+        while(i < noiseCount) {
             val r = random.nextInt(noiseSymbols.length)
             val noise = noiseSymbols[r]
             val x = random.nextInt(gameFieldSize)
@@ -58,13 +63,21 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
             val guard = x * 1000 + y
             if (!repositionGuard.contains(guard)){
 
-                val newLetter = Letter(noise.toUpperCase(), true)
+                val newLetter = Letter(noise.toUpperCase(), true, -1)
                 field[x][y] = newLetter
                 repositionGuard.add(guard)
                 i++
             }
-        }while (i < noiseCount)
+        }
 
-        return GameField(field, word)
+        val list = mutableListOf<Letter>()
+        var index = 0
+        for (a in field){
+            for (letter in a){
+                val newLetter = Letter(letter.char, letter.isEmpty, index++)
+                list.add(newLetter)
+            }
+        }
+        return GameField(list, word)
     }
 }

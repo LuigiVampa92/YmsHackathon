@@ -15,7 +15,7 @@ class StubWordsProviderImpl : WordsProvider {
     override fun getWordByLetterCount(count: Int): String {
         val filteredArray = wordsArray.filter {it.length == count}
         val targetSize = filteredArray.size
-        val word = if (targetSize != 0) filteredArray[random.nextInt()] else "армагеддон"
+        val word = if (targetSize != 0) filteredArray[random.nextInt(targetSize)] else "армагеддон"
         return word
 
     }
