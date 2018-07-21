@@ -1,6 +1,7 @@
 package com.luigivampa92.yms.timekiller.ui.main
 
 import android.content.Context
+import android.media.AudioManager
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -13,6 +14,9 @@ import com.luigivampa92.yms.timekiller.R
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import com.luigivampa92.yms.timekiller.ui.base.BaseActivity
 import javax.inject.Inject
+import android.media.MediaPlayer
+import kotlinx.coroutines.experimental.launch
+
 
 class MainActivity : BaseActivity(), MainView {
 
@@ -67,6 +71,27 @@ class MainActivity : BaseActivity(), MainView {
     override fun setTime(time: Int) {
         runOnUiThread {
             timeTextView.text = time.toString()
+        }
+    }
+
+    override fun playValid() {
+        launch {
+            val mp = MediaPlayer.create(applicationContext, R.raw.valid)
+            mp.start()
+        }
+    }
+
+    override fun playInvalid() {
+        launch {
+            val mp = MediaPlayer.create(applicationContext, R.raw.invalid)
+            mp.start()
+        }
+    }
+
+    override fun playSuccess() {
+        launch {
+            val mp = MediaPlayer.create(applicationContext, R.raw.success)
+            mp.start()
         }
     }
 }

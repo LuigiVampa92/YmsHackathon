@@ -48,12 +48,13 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun wordLetterClicked(letter: Letter) {
         log("letter ${letter.char.toString()} in word clicked")
+
     }
 
     fun fieldLetterClicked(letter: Letter) {
         if (wordToFill!![wordCurrent!!.length] == letter.char) {
             log("valid letter")
-
+            viewState.playValid()
             // remove clicked letter from field
             val newLetter = letter.copy(isEmpty = true)
             (currentField.field as ArrayList).set(letter.position, newLetter)
@@ -62,11 +63,13 @@ class MainPresenter : MvpPresenter<MainView>() {
 
             if (wordCurrent!!.length == wordToFill!!.length) {
                 currentDifficulty += 7
+                viewState.playSuccess()
                 start()
             }
         }
         else {
             log("invalid letter") // todo
+            viewState.playInvalid()
         }
         updateViewState()
     }
@@ -76,7 +79,7 @@ class MainPresenter : MvpPresenter<MainView>() {
             repeat(100000) {
                 time--
                 viewState.setTime(time)
-                delay(1000)
+                delay(1000L)
             }
         }
     }

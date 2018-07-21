@@ -7,4 +7,7 @@ interface MainView : MvpView {
     fun setWord(letter: List<Letter>)
     fun setField(field: List<Letter>)
     fun setTime(time: Int)
+    fun playValid()
+    fun playInvalid()
+    fun playSuccess()
 }
