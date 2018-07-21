@@ -24,6 +24,7 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     private var currentDifficulty = 20
 
+    private var totalGameTime = 0
     private var time = 60
 
     fun updateViewState() {
@@ -39,6 +40,7 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     fun start() {
+        totalGameTime = 0
         currentField = gameProvider.nextField(currentDifficulty)
         wordToFill = currentField.word
         wordCurrent = ""
@@ -48,7 +50,6 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun wordLetterClicked(letter: Letter) {
         log("letter ${letter.char.toString()} in word clicked")
-
     }
 
     fun fieldLetterClicked(letter: Letter) {
@@ -63,14 +64,14 @@ class MainPresenter : MvpPresenter<MainView>() {
 
             if (wordCurrent!!.length == wordToFill!!.length) {
                 currentDifficulty += 7
-                time += 10
+                time += 7
                 viewState.playSuccess()
                 start()
             }
         }
         else {
             log("invalid letter") // todo
-            time -= 3
+            time -= 4
             viewState.playInvalid()
         }
         updateViewState()
@@ -80,6 +81,7 @@ class MainPresenter : MvpPresenter<MainView>() {
         launch {
             repeat(100000) {
                 time--
+                totalGameTime++
                 viewState.setTime(time)
                 checkIfGameIsOver()
                 delay(1, TimeUnit.SECONDS)
@@ -91,7 +93,7 @@ class MainPresenter : MvpPresenter<MainView>() {
     fun checkIfGameIsOver() {
         if (time <= 0) {
             time = 60
-            viewState.showGameOver(42)
+            viewState.showGameOver(totalGameTime)
         }
     }
 
