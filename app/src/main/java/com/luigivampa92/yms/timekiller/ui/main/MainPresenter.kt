@@ -63,6 +63,7 @@ class MainPresenter : MvpPresenter<MainView>() {
 
             if (wordCurrent!!.length == wordToFill!!.length) {
                 currentDifficulty += 7
+                time += 10
                 viewState.playSuccess()
                 start()
             }
