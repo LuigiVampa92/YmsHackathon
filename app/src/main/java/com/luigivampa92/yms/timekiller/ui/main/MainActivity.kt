@@ -37,6 +37,9 @@ class MainActivity : BaseActivity(), MainView {
     private lateinit var wordLayoutManager: RecyclerView.LayoutManager
     private lateinit var fieldAdapter: FieldRecyclerViewAdapter
     private lateinit var fieldLayoutManager: RecyclerView.LayoutManager
+    private lateinit var mpValid: MediaPlayer
+    private lateinit var mpInvalid: MediaPlayer
+    private lateinit var mpSuccess: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +55,17 @@ class MainActivity : BaseActivity(), MainView {
         fieldLayoutManager = GridLayoutManager(this, 8)
         recyclerViewField.adapter = fieldAdapter
         recyclerViewField.layoutManager = fieldLayoutManager
+
+        mpValid = MediaPlayer.create(applicationContext, R.raw.valid)
+        mpSuccess = MediaPlayer.create(applicationContext, R.raw.success)
+        mpInvalid = MediaPlayer.create(applicationContext, R.raw.invalid)
     }
 
     override fun onResume() {
         super.onResume()
 
         presenter.start()
+        presenter.startTicker()
     }
 
     override fun setWord(letter: List<Letter>) {
@@ -76,22 +84,19 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun playValid() {
         launch {
-            val mp = MediaPlayer.create(applicationContext, R.raw.valid)
-            mp.start()
+            mpValid.start()
         }
     }
 
     override fun playInvalid() {
         launch {
-            val mp = MediaPlayer.create(applicationContext, R.raw.invalid)
-            mp.start()
+            mpInvalid.start()
         }
     }
 
     override fun playSuccess() {
         launch {
-            val mp = MediaPlayer.create(applicationContext, R.raw.success)
-            mp.start()
+            mpSuccess.start()
         }
     }
 }
