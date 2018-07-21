@@ -15,11 +15,15 @@ class MainPresenter : MvpPresenter<MainView>() {
     private val gameProvider: GameProvider = GameProviderImpl(StubWordsProviderImpl())
 
     private lateinit var currentField: GameField
+    private var wordCurrent: String? = null
+    private var wordToFill: String? = null
 
     fun updateViewState() {
+        val wordsStr = currentField.word
+
         val word = ArrayList<Letter>()
-        for (i in 0 until currentField.word.length) {
-            word.add(Letter(currentField.word[i], false, i))
+        for (i in 0 until wordsStr!!.length) {
+            word.add(Letter(wordsStr!![i], wordCurrent!!.length < i + 1, i))
         }
 
         viewState.setWord(word)
@@ -28,6 +32,9 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun start() {
         currentField = gameProvider.nextField(70)
+        wordToFill = currentField.word
+        wordCurrent = ""
+
         updateViewState()
     }
 
@@ -36,7 +43,23 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     fun fieldLetterClicked(letter: Letter) {
-        log("letter ${letter.char.toString()} in field clicked")
+        if (wordToFill!![wordCurrent!!.length] == letter.char) {
+            log("valid letter")
+
+            // remove clicked letter from field
+            val newLetter = letter.copy(isEmpty = true)
+            (currentField.field as ArrayList).set(letter.position, newLetter)
+
+            wordCurrent += letter.char
+
+            if (wordCurrent!!.length == wordToFill!!.length) {
+                start()
+            }
+        }
+        else {
+            log("invalid letter") // todo
+        }
+        updateViewState()
     }
 
     fun testWord() {

@@ -7,13 +7,13 @@ import com.luigivampa92.yms.timekiller.model.entity.Letter
 
 class WordRecyclerViewAdapter(
         private val onItemClick: (Letter) -> Unit
-) : RecyclerView.Adapter<LetterViewHolder>() {
+) : RecyclerView.Adapter<WordLetterViewHolder>() {
 
     private val items: ArrayList<Letter> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LetterViewHolder(LayoutInflater.from(parent.context), parent, onItemClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = WordLetterViewHolder(LayoutInflater.from(parent.context), parent, onItemClick)
 
-    override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WordLetterViewHolder, position: Int) {
         holder.bind(items[position])
     }
 

@@ -78,6 +78,6 @@ class GameProviderImpl(val wordsProvider : WordsProvider) : GameProvider{
                 list.add(newLetter)
             }
         }
-        return GameField(list, word)
+        return GameField(list, word.toUpperCase())
     }
 }
