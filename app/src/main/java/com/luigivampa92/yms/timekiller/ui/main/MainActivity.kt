@@ -1,11 +1,14 @@
 package com.luigivampa92.yms.timekiller.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
+import android.support.v7.widget.Toolbar
+import android.view.Menu
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -17,6 +20,10 @@ import android.media.MediaPlayer
 import android.support.v7.app.AlertDialog
 import android.view.View
 import kotlinx.coroutines.experimental.launch
+
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 
 
 class MainActivity : BaseActivity(), MainView {
@@ -31,6 +38,8 @@ class MainActivity : BaseActivity(), MainView {
     protected lateinit var recyclerViewWord: RecyclerView
     @BindView(R.id.recycler_view_field)
     protected lateinit var recyclerViewField: RecyclerView
+    @BindView(R.id.toolbar)
+    protected lateinit var toolbar: Toolbar
     @BindView(R.id.time_text_view)
     protected lateinit var timeTextView: TextView
 
@@ -60,6 +69,27 @@ class MainActivity : BaseActivity(), MainView {
         mpValid = MediaPlayer.create(applicationContext, R.raw.valid)
         mpSuccess = MediaPlayer.create(applicationContext, R.raw.success)
         mpInvalid = MediaPlayer.create(applicationContext, R.raw.invalid)
+
+        setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_result -> {
+                val intent = Intent(this, ResultActivity::class.java)
+                startActivity(intent)
+            }
+            else -> {
+            }
+        }
+
+        return true
     }
 
     override fun onResume() {
