@@ -4,6 +4,7 @@ import com.luigivampa92.yms.timekiller.model.GameProviderImpl
 import com.luigivampa92.yms.timekiller.model.StubWordsProviderImpl
 import com.luigivampa92.yms.timekiller.model.entity.Letter
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class StabWordsProviderImplTest {
@@ -49,6 +50,10 @@ class StabWordsProviderImplTest {
         val s2c = s2.filter { it != ' ' }
         assertEquals(18, s2c.length)
 
+
+        val w1 = game.nextField(41)
+
+        assertTrue(w1.word.length > 7)
 
     }
 }
