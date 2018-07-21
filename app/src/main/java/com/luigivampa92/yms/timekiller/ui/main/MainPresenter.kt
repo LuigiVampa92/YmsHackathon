@@ -6,7 +6,5 @@ import com.arellomobile.mvp.MvpPresenter
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
 
-    fun testPresenter() {
-        viewState.test()
-    }
+
 }
