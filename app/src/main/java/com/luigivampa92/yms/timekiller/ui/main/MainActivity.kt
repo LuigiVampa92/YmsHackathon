@@ -50,7 +50,7 @@ class MainActivity : BaseActivity(), MainView {
     override fun onResume() {
         super.onResume()
 
-        presenter.testWord()
+        presenter.start()
     }
 
     override fun setWord(letter: List<Letter>) {
