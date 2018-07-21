@@ -110,8 +110,8 @@ class MainActivity : BaseActivity(), MainView {
                     .setMessage("Вы продержались $time секунд")
                     .setPositiveButton("Еще раз", { dialog, _ ->
                         dialog.dismiss()
-                        presenter.start()
                         presenter.restartTime()
+                        presenter.start()
                         setTimerVisibility(true)
                     })
                     .show()

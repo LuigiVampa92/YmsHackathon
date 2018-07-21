@@ -92,7 +92,7 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun checkIfGameIsOver() {
         if (time <= 0) {
-            time = 60
+            time = 1000000
             viewState.showGameOver(totalGameTime)
         }
     }
